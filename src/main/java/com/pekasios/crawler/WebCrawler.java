@@ -31,15 +31,19 @@ class WebCrawler {
                 .collect(Collectors.toList());
     }
 
-    Map<String, Long> extractJavascriptLibraries(List<String> resultLinks){
+    List<String> extractJavascriptLibraries(String resultLink){
+        return Jsoup.parse(Connection.loadFromURL(resultLink))
+                .select("script")
+                .stream()
+                .map(element -> element.attr("src"))
+                .filter(src -> !StringUtil.isBlank(src))
+                .collect(Collectors.toList());
+    }
+
+    Map<String, Long> countJavascriptLibraries(List<String> resultLinks){
         Map<String, Long> scriptSourcesMap = new HashMap<>();
         for (String link : resultLinks) {
-            List<String> scriptSources = Jsoup.parse(Connection.loadFromURL(link))
-                    .select("script")
-                    .stream()
-                    .map(element -> element.attr("src"))
-                    .filter(src -> !StringUtil.isBlank(src))
-                    .collect(Collectors.toList());
+            List<String> scriptSources = extractJavascriptLibraries(link);
 
             for (String scriptSrc : scriptSources) {
                 String jsName = scriptSrc.substring(scriptSrc.lastIndexOf("/"));
