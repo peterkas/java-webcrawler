@@ -1,4 +1,4 @@
-package com.pekasios;
+package com.pekasios.crawler;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,19 +20,11 @@ public class WebCrawlerTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"searchTerm"})
-    void readStringFromStdin(String input) {
-        System.setIn(new ByteArrayInputStream(input.getBytes()));
-
-        assertEquals("searchTerm", webCrawler.readStringFromStdin());
-    }
-
-    @ParameterizedTest
     @CsvSource({"weather,<title>weather - Bing</title>"})
     void getBingResultsFromSearchTerm(String input, String expected) {
 
         assertTrue("Get a Bing result page for the search term",
-                webCrawler.searchResultsInBing(input).contains(expected));
+                webCrawler.searchTermResultsInBing(input).contains(expected));
     }
 
     @ParameterizedTest
@@ -40,6 +32,6 @@ public class WebCrawlerTest {
     void extractMainPageResults(String input) {
 
         assertEquals(9,
-                webCrawler.extractMainResultLinks(webCrawler.searchResultsInBing(input)).size());
+                webCrawler.extractMainResultLinks(webCrawler.searchTermResultsInBing(input)).size());
     }
 }
