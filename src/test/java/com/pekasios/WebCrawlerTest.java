@@ -1,16 +1,14 @@
 package com.pekasios;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class WebCrawlerTest {
 
@@ -37,4 +35,11 @@ public class WebCrawlerTest {
                 webCrawler.searchResultsInBing(input).contains(expected));
     }
 
+    @ParameterizedTest
+    @ValueSource(strings = {"weather"})
+    void extractMainPageResults(String input) {
+
+        assertEquals(9,
+                webCrawler.extractMainResultLinks(webCrawler.searchResultsInBing(input)).size());
+    }
 }
