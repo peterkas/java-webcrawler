@@ -1,10 +1,7 @@
-package com.pekasios.crawler;
+package com.pekasios.parser;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;

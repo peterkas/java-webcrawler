@@ -1,4 +1,4 @@
-package com.pekasios.crawler;
+package com.pekasios.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.net.URLConnection;
  *
  * @author Pedro Casis
  */
-class Connection {
+public class Connection {
 
     public static String loadHTMLFromURL(String url) {
         StringBuilder output = new StringBuilder();
@@ -25,7 +25,7 @@ class Connection {
                 output.append(inputLine);
             in.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         return output.toString();
     }

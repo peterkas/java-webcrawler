@@ -1,4 +1,4 @@
-package com.pekasios.crawler;
+package com.pekasios.parser;
 
 import org.jsoup.Jsoup;
 import org.jsoup.internal.StringUtil;
@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Class to encapsulate parse logic
+ * Class to encapsulate parse logic, Jsoup library is used to simplify html parsing
  *
  * @author Pedro Casis
  */
-class WebParser {
+public class WebParser {
 
     public static List<String> parseResultLinks(String htmlResultPage) {
         // https://jsoup.org/cookbook/input/parse-document-from-string

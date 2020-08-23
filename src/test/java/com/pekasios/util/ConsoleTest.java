@@ -1,4 +1,4 @@
-package com.pekasios.crawler;
+package com.pekasios.util;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
@@ -39,7 +39,7 @@ class ConsoleTest {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         System.setOut(new PrintStream(baos));
 
-        Console.printTopFive(resultsMap);
+        Console.printItems(resultsMap, 5, true);
 
         assertEquals("jQuery=543\n" +
                 "Node.js=398\n" +

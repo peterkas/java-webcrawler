@@ -1,11 +1,14 @@
 package com.pekasios.crawler;
 
-import java.util.HashMap;
+import com.pekasios.parser.JavascriptLibraryExtractor;
+import com.pekasios.parser.WebParser;
+import com.pekasios.util.Connection;
+
 import java.util.List;
 import java.util.Map;
 
 /**
- * Java program which counts top javascript libraries used in web pages found on Bing
+ * Web crawler to extract javascript libraries used in web pages
  *
  * @author Pedro Casis
  */
@@ -14,38 +17,39 @@ public class WebCrawler {
     private static final int RESULTS_PER_PAGE_BY_DEFAULT = 10;
     private static final String BING_SEARCH_BASE_URL = "http://www.bing.com/search";
 
-    String searchTermResultsInBing(String term) {
+    private final String searchUrl;
+
+    public WebCrawler() {
+        this(BING_SEARCH_BASE_URL);
+    }
+
+    public WebCrawler(String baseSearchUrl) {
+        this.searchUrl = baseSearchUrl;
+    }
+
+    public Map<String, Long> searchJavascriptLibraries(String term) {
+        // Single Page search
+        // TODO Implement multipage search
+        String resultsPage = searchTermResultsInBing(term);
+        List<String> resultLinks = getMainResultLinks(resultsPage);
+        JavascriptLibraryExtractor jsLibExtractor = new JavascriptLibraryExtractor();
+        return jsLibExtractor.extractLibraries(resultLinks);
+    }
+
+    private String searchTermResultsInBing(String term) {
         return searchTermResultsInBing(term, RESULTS_PER_PAGE_BY_DEFAULT);
     }
 
-    String searchTermResultsInBing(String term, int resultsPerPage) {
+    private String searchTermResultsInBing(String term, int resultsPerPage) {
         // https://docs.microsoft.com/en-us/rest/api/cognitiveservices-bingsearch/bing-web-api-v5-reference#query-parameters
-        return Connection.loadHTMLFromURL(BING_SEARCH_BASE_URL + "?q=" + term + "&count=" + resultsPerPage);
+        return Connection.loadHTMLFromURL(buildSearchUrl(term, resultsPerPage));
     }
 
-    List<String> extractMainResultLinks(String htmlResultPage) {
+    private String buildSearchUrl(String term, int resultsPerPage) {
+        return this.searchUrl + "?q=" + term + "&count=" + resultsPerPage;
+    }
+
+    private List<String> getMainResultLinks(String htmlResultPage) {
         return WebParser.parseResultLinks(htmlResultPage);
-    }
-
-    List<String> extractJavascriptLibraries(String resultLink){
-        return WebParser.parseJavascriptLibraries(Connection.loadHTMLFromURL(resultLink));
-    }
-
-    Map<String, Long> countJavascriptLibraries(List<String> resultLinks){
-        Map<String, Long> scriptSourcesMap = new HashMap<>();
-        for (String link : resultLinks) {
-            List<String> scriptSources = extractJavascriptLibraries(link);
-
-            for (String scriptSrc : scriptSources) {
-                String jsName = scriptSrc.substring(scriptSrc.lastIndexOf("/"));
-
-                if (scriptSourcesMap.containsKey(jsName)) {
-                    scriptSourcesMap.put(jsName, scriptSourcesMap.get(jsName)+1);
-                } else {
-                    scriptSourcesMap.put(jsName, 1L);
-                }
-            }
-        }
-        return scriptSourcesMap;
     }
 }
