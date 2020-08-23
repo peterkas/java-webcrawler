@@ -28,9 +28,11 @@ public class WebCrawler {
     }
 
     public Map<String, Long> searchJavascriptLibraries(String term) {
-        // Single Page search
-        // TODO Implement multipage search
+        // Implemented Single Page search
         String resultsPage = searchTermResultsInBing(term);
+
+        // TODO Implement multipage search
+
         List<String> resultLinks = getMainResultLinks(resultsPage);
         JavascriptLibraryExtractor jsLibExtractor = new JavascriptLibraryExtractor();
         return jsLibExtractor.extractLibraries(resultLinks);

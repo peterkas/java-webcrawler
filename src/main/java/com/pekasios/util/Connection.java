@@ -14,6 +14,7 @@ import java.net.URLConnection;
 public class Connection {
 
     public static String loadHTMLFromURL(String url) {
+        // The performance of HTML loading method can be improved by implementing reactive/asyncronous connections
         StringBuilder output = new StringBuilder();
         try {
             URLConnection yc = new URL(url).openConnection();
