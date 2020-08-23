@@ -94,19 +94,19 @@ public class JavascriptLibraryExtractor {
             this.link = link;
         }
 
+        private List<String> detectJavascriptLibraries() {
+            // a better approach for Extracting Js Libraries could have been implemented,
+            // for example, you should be able to detect any library by the global variables it defines.
+            // Logic used to detect and extract JS libraries is encapsulated in here
+            return WebParser.parseJavascriptLibraries(Connection.loadHTMLFromURL(link));
+        }
+
         @Override public List<String> call() {
             System.out.println("Extracting javascript libraries from [" + link + "]");
             List<String> list = detectJavascriptLibraries();
 
             System.out.println("Finished extracting from [" + link + "] found " + list.size() + " libraries");
             return list;
-        }
-
-        private List<String> detectJavascriptLibraries() {
-            // a better approach for Extracting Js Libraries could have been implemented,
-            // for example, you should be able to detect any library by the global variables it defines.
-            // Logic used to detect and extract JS libraries is encapsulated in here
-            return WebParser.parseJavascriptLibraries(Connection.loadHTMLFromURL(link));
         }
     }
 }
