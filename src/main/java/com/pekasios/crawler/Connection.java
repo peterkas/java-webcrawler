@@ -6,9 +6,14 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * Class to encapsulate HTTP connections logic
+ *
+ * @author Pedro Casis
+ */
 class Connection {
 
-    public static String loadFromURL(String url) {
+    public static String loadHTMLFromURL(String url) {
         StringBuilder output = new StringBuilder();
         try {
             URLConnection yc = new URL(url).openConnection();

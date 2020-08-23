@@ -4,6 +4,11 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Class to encapsulate Standard I/O logic
+ *
+ * @author Pedro Casis
+ */
 class Console {
 
     static String readStringFromStdin() {
